@@ -6,6 +6,7 @@ def group(*choices): return '(' + '|'.join(choices) + ')'
 def any(*choices): return group(*choices) + '*'
 def maybe(*choices): return group(*choices) + '?'
 
+# Numbers
 Hexnumber = r'0[xX](?:_?[0-9a-fA-F])+'
 Binnumber = r'0[bB](?:_?[01])+'
 Octnumber = r'0[oO](?:_?[0-7])+'
@@ -15,10 +16,15 @@ Pointfloat = group(r'[0-9](?:_?[0-9])*\.(?:[0-9](?:_?[0-9])*)?',
                    r'\.[0-9](?:_?[0-9])*') + maybe(Exponent)
 Expfloat = r'[0-9](?:_?[0-9])*' + Exponent
 
+# Hashes
+#MD5Hash = r'(?i)(?<![a-z0-9])[a-f0-9]{32}(?![a-z0-9])'
+# ...
+
 class PLexer(Lexer):
     tokens = {
         NAME, 
-        NUMBER, 
+        NUMBER,
+        #HASH, 
         STRING, 
         FLOAT, 
         PLUS, 
@@ -57,18 +63,27 @@ class PLexer(Lexer):
         XOR
     }
 
+    
+    ###########################################################################
+    #   Match Multiple Flavours of Comments, Multi-Line too                   #
+    ###########################################################################
+
+    # Python Style Comments
     @_(r'#.*')
     def HASH_SINGLE_COMMENT(self, t):
         pass
    
+    # C Style Comments
     @_(r'//.*')
     def SLASH_SINGLE_COMMENT(self, t):
         pass
 
+    # C Style Comments *
     @_(r'/\*.*?\*/')
     def SLASHSTAR_SINGLE_COMMENT(self, t):
         pass
 
+    # C++ Style Comments
     @_(r'\/\*+((([^\*])+)|([\*]+(?!\/)))[*]+\/')
     def SLASHSTAR_MULTI_COMMENT(self, t):
         pass
@@ -84,6 +99,10 @@ class PLexer(Lexer):
                 Decnumber
             )
 
+    #HASH = group(
+    #            MD5Hash
+    #        )
+
     ignore = ' \t\r'
     @_(r'\n')
     def newline(self,t ):
@@ -92,7 +111,14 @@ class PLexer(Lexer):
     NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
     NAME['if'] = IF
     NAME['else'] = ELSE
+    
+    # Def Synonyms
     NAME['def'] = DEF
+    NAME['function'] = DEF
+    NAME['sub'] = DEF
+    NAME['func'] = DEF
+    NAME['subroutine'] = DEF
+
     NAME['struct'] = STRUCT
     NAME['return'] = RETURN
     NAME['while'] = WHILE
@@ -124,6 +150,7 @@ class PLexer(Lexer):
     DIVIDE = r'/'
     MOD = r'%'
     COLON = r':'
+
 
     def error(self, t):
         print(f'Illegal character {t.value[0]}, in line {self.lineno}, index {self.index}')

@@ -62,3 +62,4 @@ def struct(name,struct_params,body):
     """
 
     return ('Struct', {'name': name,'body':body,'struct_params':struct_params if struct_params else []})
+

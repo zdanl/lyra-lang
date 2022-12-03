@@ -1,6 +1,7 @@
 from lexer.Lexer import PLexer
-import lexer.utils as utils
 from sly import Parser
+
+import lexer.utils as utils
 import pprint
 
 class PParser(Parser):
