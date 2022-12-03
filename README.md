@@ -1,4 +1,5 @@
-# Lyra Programming Language
+# Lyra
+### Programming Language
 
 ![Lyra Logo](lyra1.jpg)
 
