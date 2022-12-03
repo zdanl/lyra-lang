@@ -16,7 +16,7 @@ This is the official description and, so far, documentation website.
 
 You may soon use indentation OR sharp braces, and you may use a semicolon whenever you like. 
  
- ![Lyra Logo](lyra2.jpg)
+ ![Lyra Logo](lyra3.jpg)
  
  ## Features
 - **it's fast and compiled**, With C/Julia comparable speed and LLVM's cutting-edge optimizations, Lyra eliminates the need for tedious performance tweaking on your end.
