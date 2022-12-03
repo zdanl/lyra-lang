@@ -1,5 +1,5 @@
 # Lyra
-### Programming Language
+### Intentional Programming Language
 --------------
 ![Lyra Logo](lyra1.jpg)
 
