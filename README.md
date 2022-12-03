@@ -1,7 +1,7 @@
 # Lyra
 ### Intentional Programming Language
 --------------
-![Lyra Logo](lyra1.jpg)
+![Lyra Logo](assets/arts/lyra1.jpg)
 
 Lyra is a powerful and versatile programming language that combines the simplicity and expressiveness of Python3.12 and Perl5.10 with the power and efficiency of asynchronous programming and performance of LLVM. Its friendly and intuitive syntax makes it easy to learn and use, while its advanced compilation, subset and tools lead to mission assurance in various fields. Its design and optimization techniques allow it to tackle even the most demanding engineering tasks. With Lyra, you can design, synthesize, and manufacture CPUs, SoCs, and other microprocessors, as well build scalable and efficient operating systems, web and mobile apps, and more.
 This is the official description and, so far, documentation website.
@@ -16,7 +16,7 @@ This is the official description and, so far, documentation website.
 
 You may soon use indentation OR sharp braces, and you may use a semicolon whenever you like. 
  
- ![Lyra Logo](lyra3.png)
+ ![Lyra Logo](assets/arts/lyra3.png)
  
  ## Features
 - **it's fast and compiled**, With C/Julia comparable speed and LLVM's cutting-edge optimizations, Lyra eliminates the need for tedious performance tweaking on your end.
