@@ -53,6 +53,9 @@ class PLexer(Lexer):
         UNTIL, 
         BREAK, 
         CONTINUE,
+        SWITCH,
+        ASYNC,
+        AWAIT,
         AND, 
         OR, 
         COMMA,
@@ -109,9 +112,11 @@ class PLexer(Lexer):
         self.lineno += 1
 
     NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
-    NAME['if'] = IF
-    NAME['else'] = ELSE
     
+    # Novelties
+    NAME['async'] = ASYNC
+    NAME['await'] = AWAIT
+
     # Def Synonyms
     NAME['def'] = DEF
     NAME['function'] = DEF
@@ -119,14 +124,21 @@ class PLexer(Lexer):
     NAME['func'] = DEF
     NAME['subroutine'] = DEF
 
+    # OOP
     NAME['struct'] = STRUCT
+    
+    # Primitves
     NAME['return'] = RETURN
     NAME['while'] = WHILE
+    NAME['if'] = IF
+    NAME['else'] = ELSE
     NAME['until'] = UNTIL
     NAME['break'] = BREAK
+    NAME['switch'] = SWITCH
     NAME['continue'] = CONTINUE
     NAME['and'] = AND
     NAME['or'] = OR
+
     STRING = r'(\".*?\")|(\'.*?\')'
     LSHIFT = r'<<'
     RSHIFT = r'>>'
@@ -150,7 +162,6 @@ class PLexer(Lexer):
     DIVIDE = r'/'
     MOD = r'%'
     COLON = r':'
-
 
     def error(self, t):
         print(f'Illegal character {t.value[0]}, in line {self.lineno}, index {self.index}')

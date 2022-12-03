@@ -38,7 +38,7 @@ class PParser(Parser):
     @_('DEF NAME LPAREN def_params RPAREN COLON NAME LBRACE statements RBRACE')
     def statement(self,p):
         return utils.function(p.NAME0,p.def_params,p.NAME1,p.statements)
-    
+
     @_('STRUCT NAME LPAREN struct_params RPAREN LBRACE statements RBRACE')
     def statement(self,p):
         return utils.struct(p.NAME0, p.struct_params, p.statemenets)

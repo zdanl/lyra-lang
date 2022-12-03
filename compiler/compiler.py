@@ -94,7 +94,7 @@ class Compiler:
     def visit_def(self,branch):
         name = branch[1]['name']
         body = branch[1]['body']
-        params = branch[1]['struct_params']
+        params = branch[1]['def_params']
         params = params if params[0] else []
 
         # Keep track of the name of each parameter
