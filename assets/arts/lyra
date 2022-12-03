@@ -1,0 +1,136 @@
+#!/usr/bin/env python3.8
+# -*- coding: utf-8 -*-
+
+# .__                           
+# |  |  ___.__._______ _____    
+# |  | <   |  |\_  __ \\__  \   
+# |  |__\___  | |  | \/ / __ \_ 
+# |____// ____| |__|   (____  / 
+#       \/                  \/
+
+import llvmlite.binding as llvm
+
+from lexer.Lexer import PLexer
+from lexer.Parser import PParser
+from compiler.compiler import Compiler
+
+from ctypes import CFUNCTYPE, c_int, c_float
+from time import time
+
+import sys
+import pprint
+import argparse
+
+def lyra_file(file):
+    with open(file, 'r') as file:
+        code = file.read()
+    return code
+
+def lyra_ast(code):
+    lexer = PLexer()
+    tokens = lexer.tokenize(code)
+    parser = PParser()
+    parser.parse(tokens)
+    ast = parser.ast
+    ast = ast[1]['body']
+    return ast
+
+def lyra_compile(ast):
+    compiler = Compiler()
+    compiler.compile(ast)
+    module = compiler.module
+    module.triple = llvm.get_default_triple()
+    llvm.initialize()
+    llvm.initialize_native_target()
+    llvm.initialize_native_asmprinter()
+
+    llvm_ir_parsed = llvm.parse_assembly(str(module))
+    llvm_ir_parsed.verify()
+
+    target_machine = llvm.Target.from_default_triple().create_target_machine()
+    engine = llvm.create_mcjit_compiler(llvm_ir_parsed, target_machine)
+    engine.finalize_object()
+
+    # Run the function with name func_name.
+    # This is why it makes sense to have a 'main' function that calls other functions.
+    entry = engine.get_function_address('main')
+    cfunc = CFUNCTYPE(c_int)(entry)
+
+    return (module, cfunc)
+
+def lyra_run(module, cfunc):
+    module.triple = llvm.get_default_triple()
+    llvm.initialize()
+    llvm.initialize_native_target()
+    llvm.initialize_native_asmprinter()
+
+    llvm_ir_parsed = llvm.parse_assembly(str(module))
+    llvm_ir_parsed.verify()
+
+    target_machine = llvm.Target.from_default_triple().create_target_machine()
+    engine = llvm.create_mcjit_compiler(llvm_ir_parsed, target_machine)
+    engine.finalize_object()
+
+    # Run the function with name func_name.
+    # This is why it makes sense to have a 'main' function that calls other functions.
+    entry = engine.get_function_address('main')
+    cfunc = CFUNCTYPE(c_int)(entry)
+
+    start_time = time()
+    result = cfunc()
+    end_time = time()
+
+    print(f'It returns {result}')
+    print('\nExecuted in {:f} sec'.format(end_time - start_time))
+
+def lyra_main():
+    code = lyra_file(argv.file)
+    ast = lyra_ast(code)
+    module, cfunc = lyra_compile(ast)
+
+    if argv.generate_ast or argv.print_ast:
+        if argv.generate_ast:
+            with open(argv.file + ".ast", 'w') as ast_file:
+                ast_file.write(pprint.pformat(ast))
+        if argv.print_ast:
+            print(pprint.pformat(ast))
+
+    if argv.generate_ir or argv.print_ir:
+        if argv.generate_ir:
+            with open(argv.file + ".llvmir", 'w') as ir_file:
+                ir_file.write(str(module))
+        if argv.print_ir:
+            print(module)
+
+    if argv.compile:
+        # figure this out
+        pass
+        print("Compiled")
+        sys.exit(1)
+
+    if argv.print_code:
+        print(code)
+
+    if not(argv.generate_ast) and not(argv.generate_ir) \
+        and not(argv.print_ast) \
+        and not(argv.print_ir) and not(argv.compile) \
+        and not(argv.print_code):
+        lyra_run(module, cfunc)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser("lyra")
+    parser.add_argument("file", help="Target file")
+    parser.add_argument("-generate-ir", action='store_true',
+                            help="Generate LLVM IR")
+    parser.add_argument("-generate-ast", action='store_true',
+                            help="Generate AST")
+    parser.add_argument("-print-ast", action='store_true',
+                            help="Print Abstract Syntax Tree")
+    parser.add_argument("-print-ir", action='store_true',
+                            help="Print LLVM IR")
+    parser.add_argument("-compile", "-c",
+                            help="Compile to native code")
+    parser.add_argument("-print-code", action='store_true', 
+                            help="Pretty print code")
+    argv = parser.parse_args()
+    lyra_main()
