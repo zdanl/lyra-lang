@@ -1,46 +1,63 @@
-# Lyra - A discreet, syntax liberal, llvm ahead-of-time optimized programming language 
-## Useful for everything from Verilog gate level synthesis to High Level Web Apps and Mobile apps with NoSQL
-## Defeating your Antivirus soon by default running in curve25519 encrypted memory!
+# Lyra Programming Language
 
-![Lyra Lang](https://github.com/zdanl/lyra-lang/blob/main/github-header-image%20(1).png?raw=true)
+Lyra is a powerful and versatile programming language that combines the simplicity and expressiveness of Python3.12 and Perl5.10 with the power and efficiency of asynchronous programming and performance of LLVM. Its friendly and intuitive syntax makes it easy to learn and use, while its advanced compilation, subset and tools lead to mission assurance in various fields. Its design and optimization techniques allow it to tackle even the most demanding engineering tasks. With Lyra, you can design, synthesize, and manufacture CPUs, SoCs, and other microprocessors, as well build scalable and efficient operating systems, web and mobile apps, and more.
+This is the official description and, so far, documentation website.
 
-This is a compiler for Lyra Language, built with Python 3.8+ (soon Python3.12+ once we get llvmlite to run) and the LLVM framework using the python3-llvmlite library. It supports C/C++ type multiline comments, single line comments of both C/C++ and Python typical syntax/standards, also JuliaLang features as to commentary, and this doesn't stop with there. Contrary to Python as to dynamic implementation of its class structure and inheritance system of Object/Function Prototypes similiary thought as v8 Javascript prototypes; due to the dynamic nature of the language running itself, quite different from Javascript v8 in that manner, it supports (will support) a Lexically inbound Compiled Class Token, which Julia lacks by parallel integration of them with structs and wiring of functions into the structs, to the best of our knowledge, meaning that as in Python "def" or "func, Perl "sub", will be equal oppertunity lexical tokens contesting "class" including its parameters, but *not* the Lyra typical precondition of a method to announce its return value type, as in func test():int. This is tricky to implement in the Lexer and Parser. The useit-for-anything-but-multi-platform-cross-architecture-malware language  is very punctuation liberal and allows different styles of addressing memory from data structures. For example the following are legitimate accessors for both object attributes and dictionary keys ´´ -> :: : . ´´ 
+## Road Map
+
+| Predicted Version | Description of Progress | Timestamp |
+| --------------- | --------------- | --------------- |
+| Original | Type system, Functional Language, Lexer/Compiler | This was the original work |
+| 0.1 | Multiline comments and different styles of it were contributed, OOP discussed | 30/11/2022 |
+| 0.2 | Implementation of the entire AST is still in progress | 03/12/2022 |
 
 You may soon use indentation OR sharp braces, and you may use a semicolon whenever you like. 
  
  ## Features
-- **it's fast**, because it should be so, together with LLVM's state of the art optimizations, but it won't ever oblige you to make
-                 an extra effort from your side just for the sake of performance
-
-- **it's compiled** using llvmlite
+- **it's fast and compiled**, With C/Julia comparable speed and LLVM's cutting-edge optimizations, Lyra eliminates the need for tedious performance tweaking on your end.
 
 - **it's statically typed** so you don't need to guess the type of the variable if your coworker didn't spend the time to use meaningful names and you can make use of compile-time checks, autocomplete and more
 
 - **it's simple and expressive** because the code should be easily readable and it shouldn't make you guess what it does, but you can give it your very personal touch and style
 
-Install the requirements
-```bash
-pip3.8 install -r requirements.txt
+
+
+## How to run, compile or translate .ly files/projects
+
 ```
+./lyra --compile <filename>
+./lyra --generate-ast <filename>
+./lyra --print-ast <filename>
+./lyra --generate-llvm <filename>
+./lyra --print-llvm <filename>
+./lyra --generate-hdl <filename>
+./lyra --help
 
-# ./tests
-
-> These are all working perfectly, a unittest like test runner is being built.
-
+```
+ 
 ## ./lyra
 
 This is the compiler.
 
-It supports multiple features as in just printing the AST, generating LLVM IR, compiling statically before not running, or just running.
+It supports multiple features as in just printing the AST, generating LLVM IR, compilation, or translation into Hardware Description Language (HDL).
 
-The language was inspired by the originally forked Github repository type-wise, and clearly a mix of Python3 and Perl5.10 syntax wise.
+## Functions, Synonym Naming Conventions and Braces OR Indents
 
 ```
-def fact(n:int):int{
-    if n <= 1{
+def logic_gate:2(n_input:int):int{
+    if n_input <= 1{
         return 1
     }
-    return n * fact(n-1)
+    return n * fact(n_input-1)
+}
+
+sub logic_gate_2(n:int):int:
+    if n > 5:
+        return 0
+
+function logic_gate_3(n_input1:int, n_input2:sha1) {
+    n_input2 ^= n_input1 << 0x44
+    return n_input2
 }
 
 def main():int{
@@ -51,14 +68,18 @@ def main():int{
 ## Conditionals
 
 ```
-def main():int{
-
-    age = 18
-    if age == 18{
+def if-expression():int{
+    server_load = 300
+    server_load ^= 44
+    
+    if server_load < 200 {
         printf('wow you are 18\n')
-    }else{
+    } else {
         printf('i guess you are not 18\n')
     }
+    
+    if server_load >= 400:
+        printf('foo')
 
     return 0
 }
@@ -86,9 +107,21 @@ def main():int{
 
     return 0
 }
-```
-## How to run it
+````
+
+## Multi Line Comments and Single Line Flavours
 
 ```
-./lyra --compile <filename>
+# this is a comment
+
+#=
+    this is a julia style multi line comment
+#=
+
+/*
+    this is a c style multi line comment
+*/
+
+// this is a c style single line comment
+
 ```
