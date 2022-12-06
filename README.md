@@ -1,5 +1,7 @@
 # Lyra
-### Intentional Programming Language
+### Intentional Programming Language for the Semiconductor Industry
+[https://lyralang.org](https://lyralang.org)
+
 --------------
 ![Lyra Logo](assets/arts/lyra1.jpg)
 
