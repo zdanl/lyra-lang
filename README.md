@@ -1,5 +1,7 @@
 # Lyra
-### Intentional Programming Language for the Semiconductor Industry
+### LangSec Programming Language for the Semiconductor Industry
+![NylonCat](https://i.ibb.co/PtzDCYK/nylon.gif)
+
 [https://lyralang.org](https://lyralang.org)
 
 --------------
